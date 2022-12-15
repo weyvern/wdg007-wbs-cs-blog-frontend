@@ -21,7 +21,7 @@ const SinglePost = () => {
   return post ? (
     <div>
       <h1>{post.title}</h1>
-      <h4>{`By: ${post.author}`}</h4>
+      <h4>{`By: ${post.author.firstName} ${post.author.lastName}`}</h4>
       <img src={post.image} alt={post.title} style={{ maxHeight: '500px' }} />
       <p>{post.body}</p>
     </div>
