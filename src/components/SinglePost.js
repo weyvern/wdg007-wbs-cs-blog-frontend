@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import Loading from './Loading';
 
 const SinglePost = () => {
   const { id } = useParams();
@@ -25,7 +26,9 @@ const SinglePost = () => {
       <img src={post.image} alt={post.title} style={{ maxHeight: '500px' }} />
       <p>{post.body}</p>
     </div>
-  ) : null;
+  ) : (
+    <Loading />
+  );
 };
 
 export default SinglePost;

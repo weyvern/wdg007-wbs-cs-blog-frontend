@@ -24,7 +24,7 @@ const Login = ({ isAuthenticated, setToken, setIsAuthenticated }) => {
       toast.error(error.message);
     }
   };
-  if (isAuthenticated) return <Navigate to='/' />;
+  if (isAuthenticated) return <Navigate to='/auth' />;
   return (
     <div className='row justify-content-center'>
       <div className='col-md-4'>

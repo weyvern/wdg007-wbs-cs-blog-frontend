@@ -3,13 +3,16 @@ import { Route, Routes } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import NavBar from './components/NavBar';
 import GlobalLayout from './components/GlobalLayout';
+import ProtectedRoute from './components/ProtectedRoute';
 import Home from './components/Home';
 import Login from './components/Login';
 import Register from './components/Register';
 import SinglePost from './components/SinglePost';
 import CreatePost from './components/CreatePost';
-import 'react-toastify/dist/ReactToastify.css';
+import UserProfile from './components/UserProfile';
+import NotFound from './components/NotFound';
 import { getUser } from './utils/authUtils';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App = () => {
   const [token, setToken] = useState(localStorage.getItem('token'));
@@ -67,7 +70,11 @@ const App = () => {
             }
           />
           <Route path='posts/:id' element={<SinglePost />} />
-          <Route path='create' element={<CreatePost />} />
+          <Route path='auth' element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
+            <Route index element={<UserProfile user={user} />} />
+            <Route path='create' element={<CreatePost />} />
+          </Route>
+          <Route path='*' element={<NotFound />} />
         </Route>
       </Routes>
     </>

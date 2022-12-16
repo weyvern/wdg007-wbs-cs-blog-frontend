@@ -44,15 +44,15 @@ const NavBar = ({ isAuthenticated, user, logOut }) => {
               <>
                 {user && (
                   <li className='nav-item'>
-                    <p className='nav-link'>
+                    <Link to='/auth' className='nav-link'>
                       <span data-bs-target='#navbarNav' data-bs-toggle='collapse'>
                         Welcome back, {user.firstName} {user.lastName}
                       </span>
-                    </p>
+                    </Link>
                   </li>
                 )}
                 <li className='nav-item'>
-                  <Link to='/create' className='nav-link'>
+                  <Link to='/auth/create' className='nav-link'>
                     <span data-bs-target='#navbarNav' data-bs-toggle='collapse'>
                       Create post
                     </span>
