@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { loginUser } from '../utils/authUtils';
 
-const Login = () => {
+const Login = ({ isAuthenticated, setToken, setIsAuthenticated }) => {
   const [{ email, password }, setFormState] = useState({
     email: '',
     password: ''
@@ -13,14 +14,17 @@ const Login = () => {
   const handleSubmit = async e => {
     try {
       e.preventDefault();
-      if (!email || !password) throw new Error('Please fill out all the fields');
+      if (!email || !password) throw new Error('Email and password are required');
       const { data, error } = await loginUser({ email, password });
-      console.log(data, error);
+      if (error) throw error;
+      setToken(data.token);
+      setIsAuthenticated(true);
+      localStorage.setItem('token', data.token);
     } catch (error) {
       toast.error(error.message);
     }
   };
-
+  if (isAuthenticated) return <Navigate to='/' />;
   return (
     <div className='row justify-content-center'>
       <div className='col-md-4'>

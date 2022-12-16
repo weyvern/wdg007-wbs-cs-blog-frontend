@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { registerUser } from '../utils/authUtils';
 
-const Register = () => {
+const Register = ({ isAuthenticated, setToken, setIsAuthenticated }) => {
   const [{ firstName, lastName, email, password }, setFormState] = useState({
     firstName: '',
     lastName: '',
@@ -16,19 +17,22 @@ const Register = () => {
     try {
       e.preventDefault();
       if (!firstName || !lastName || !email || !password)
-        throw new Error('Please fill out all the fields');
+        throw new Error('First and last name, email and password are required');
       const { data, error } = await registerUser({
         firstName,
         lastName,
         email,
         password
       });
-      console.log(data, error);
+      if (error) throw error;
+      setToken(data.token);
+      setIsAuthenticated(true);
+      localStorage.setItem('token', data.token);
     } catch (error) {
       toast.error(error.message);
     }
   };
-
+  if (isAuthenticated) return <Navigate to='/' />;
   return (
     <div className='row justify-content-center'>
       <div className='col-md-4'>
