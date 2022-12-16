@@ -3,11 +3,11 @@ import { Link } from 'react-router-dom';
 const NavBar = ({ isAuthenticated, user, logOut }) => {
   return (
     <nav className='navbar navbar-expand-sm navbar-dark bg-light'>
-      <div className='container-fluid'>
+      <div className='container'>
         <Link to='/' className='navbar-brand'>
-          Dear diary
+          Around the world!
           <span role='img' aria-label='book'>
-            📖
+            🌍
           </span>
         </Link>
         <button
