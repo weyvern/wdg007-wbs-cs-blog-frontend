@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
+import Loading from './Loading';
 
 const CreatePost = () => {
+  const [loading, setLoading] = useState(false);
   const [{ title, image, body, author }, setFormState] = useState({
     title: '',
     image: '',
@@ -19,6 +21,7 @@ const CreatePost = () => {
     try {
       e.preventDefault();
       if (!title || !image || !body) throw new Error('Please fill out all the fields');
+      setLoading(true);
       const { data } = await axios.post(
         `${process.env.REACT_APP_BLOG_API}/posts`,
         {
@@ -29,12 +32,15 @@ const CreatePost = () => {
         },
         { headers: { Authorization: localStorage.getItem('token') } }
       );
+      setLoading(false);
       navigate(`/posts/${data._id}`, { replace: true });
     } catch (error) {
+      setLoading(false);
       toast.error(error.response?.data.error || error.message);
     }
   };
 
+  if (loading) return <Loading />;
   return (
     <div className='row justify-content-center'>
       <div className='col-md-4'>

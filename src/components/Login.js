@@ -1,9 +1,16 @@
 import { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import Loading from './Loading';
 import { loginUser } from '../utils/authUtils';
 
-const Login = ({ isAuthenticated, setToken, setIsAuthenticated }) => {
+const Login = ({
+  isAuthenticated,
+  setToken,
+  setIsAuthenticated,
+  loadingAuthRequest,
+  setLoadingAuthRequest
+}) => {
   const [{ email, password }, setFormState] = useState({
     email: '',
     password: ''
@@ -15,15 +22,20 @@ const Login = ({ isAuthenticated, setToken, setIsAuthenticated }) => {
     try {
       e.preventDefault();
       if (!email || !password) throw new Error('Email and password are required');
+      setLoadingAuthRequest(true);
       const { data, error } = await loginUser({ email, password });
       if (error) throw error;
       setToken(data.token);
       setIsAuthenticated(true);
+      setLoadingAuthRequest(false);
       localStorage.setItem('token', data.token);
     } catch (error) {
+      setLoadingAuthRequest(false);
       toast.error(error.message);
     }
   };
+
+  if (loadingAuthRequest) return <Loading />;
   if (isAuthenticated) return <Navigate to='/auth' />;
   return (
     <div className='row justify-content-center'>
